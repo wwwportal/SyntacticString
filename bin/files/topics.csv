@@ -1,0 +1,10 @@
+Functions in Python,Basic building blocks in Python that group reusable code,True
+List Comprehensions,Compact syntax for creating lists in Python,True
+Regular Expressions,Pattern matching and text parsing tool,False
+Object-Oriented Programming,Programming paradigm based on objects and classes,False
+Concurrency,Ability to run multiple computations simultaneously,False
+Lambda Functions,Anonymous short functions in Python,True
+Recursion,A function that calls itself to solve problems,True
+Generators and Iterators,Efficient looping using lazy evaluation,False
+Decorators in Python,Functions that modify other functions,False
+Memory Management,Understanding how memory is allocated and freed,False
