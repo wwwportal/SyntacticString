@@ -4,14 +4,14 @@ import java.util.ArrayList;
 public class Node implements Serializable {
 	private String line;
 	private boolean status;
-	private ArrayList<Node> references = new ArrayList<>();
+	private ArrayList<Node> links = new ArrayList<>();
 
 	public Node(String line, boolean status) {
 		this.line = line;
 		this.status = status;
 	}
 
-	public String getNode() {
+	public String getLine() {
 		return line;
 	}
 
@@ -20,7 +20,7 @@ public class Node implements Serializable {
 
 	}
 
-	public void setNode(String line) {
+	public void setLine(String line) {
 		this.line = line;
 	}
 
@@ -28,10 +28,14 @@ public class Node implements Serializable {
 		this.status = status;
 	}
 	
-	public void setReferences(Node... nodes) {
+	public void setLinks(Node... nodes) {
 		for (Node node : nodes) {
-			references.add(node);
+			links.add(node);
 		}
+	}
+
+	public ArrayList<Node> getLinks() {
+		return links;
 	}
 
 	@Override

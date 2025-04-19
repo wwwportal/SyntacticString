@@ -4,10 +4,10 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class NodeManager implements Serializable {
-    private ArrayList<Node> nodes = new ArrayList<>(); // Remove static
+    private ArrayList<Node> nodes = new ArrayList<>();
     private static Scanner in = new Scanner(System.in);
 
-    public void addNode(String name, boolean learned) { // Remove static
+    public void addNode(String name, boolean learned) {
         Node node = new Node(name, learned);
         nodes.add(node);
     }
@@ -19,7 +19,7 @@ public class NodeManager implements Serializable {
         } else {
             System.out.println("ALL NODES");
             for (int i = 0; i < nodes.size(); i++) {
-                String name = nodes.get(i).getNode();
+                String name = nodes.get(i).getLine();
                 System.out.println(i + ". " + name);
             }
         }
@@ -31,8 +31,8 @@ public class NodeManager implements Serializable {
             System.err.println("Try adding a new node!");
         } else {
             for (Node node : nodes) {
-                if (node.getStatus() == false) {
-                    System.out.println(node.getNode() + ", " + node.getStatus());
+                if (!node.getStatus() == false) {
+                    System.out.println(node.getLine() + ", " + node.getStatus());
                 }
             }
         }
@@ -48,7 +48,7 @@ public class NodeManager implements Serializable {
         String nodeName = in.nextLine().trim().toLowerCase();
         ArrayList<Node> found = new ArrayList<>();
         for (Node node : nodes) {
-            if (node.getNode().trim().toLowerCase().contains(nodeName)) {
+            if (node.getLine().trim().toLowerCase().contains(nodeName)) {
                 found.add(node);
             }
         }
@@ -58,7 +58,7 @@ public class NodeManager implements Serializable {
         }
         System.out.println("Results: ");
         for (int i = 0; i < found.size(); i++) {
-            System.out.println(i + ". " + found.get(i).getNode());
+            System.out.println(i + ". " + found.get(i).getLine());
         }
         System.out.println("Enter the number of the node you would like to edit.");
         System.out.print("Number: ");
@@ -67,7 +67,7 @@ public class NodeManager implements Serializable {
 
         if (editIndex >= 0 && editIndex < found.size()) {
             Node selected = found.get(editIndex);
-            System.out.println("Set learning status of " + selected.getNode() + " to:");
+            System.out.println("Set learning status of " + selected.getLine() + " to:");
             System.out.println("0. FALSE");
             System.out.println("1. TRUE");
             int bool = in.nextInt();
@@ -75,7 +75,7 @@ public class NodeManager implements Serializable {
             switch (bool) {
                 case 0:
                     selected.setStatus(false);
-                    break; // Add break statement
+                    break;
                 case 1:
                     selected.setStatus(true);
                     break;
@@ -91,14 +91,9 @@ public class NodeManager implements Serializable {
         nodes.clear();
     }
 
-    public void moveNode() {
-        System.out.println("Move: [source index] [target index]");
-        System.out.print("> ");
+    public void moveNode(int sourceIndex, int targetIndex) {
         try {
-            int sourceIndex = in.nextInt();
-            int targetIndex = in.nextInt();
-
-            if (sourceIndex < 0 || sourceIndex >= nodes.size() || targetIndex < 0 || targetIndex > nodes.size()) {
+            if (sourceIndex < 0 || sourceIndex >= nodes.size() || targetIndex < 0 || targetIndex >= nodes.size()) {
                 System.out.println("Invalid index. Please enter a valid index within the range of the list.");
                 return;
             }
@@ -106,12 +101,32 @@ public class NodeManager implements Serializable {
             Node sourcenode = nodes.remove(sourceIndex);
             nodes.add(targetIndex, sourcenode);
 
-            System.out.println(sourcenode.getNode() + " Has been successfully moved to position " + targetIndex);
+            System.out.println(sourcenode.getLine() + " Has been successfully moved to position " + targetIndex);
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please enter integer values for the indices.");
             in.next(); // Consume the invalid input to prevent an infinite loop
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Index out of bounds. Please enter a valid index within the range of the list.");
+        }
+    }
+
+    public void removeNode(int index) {
+        if (index >= 0 && index < nodes.size()) {
+            nodes.remove(index);
+            System.out.println("Node removed successfully.");
+        } else {
+            System.out.println("Invalid node index.");
+        }
+    }
+
+    public void addReference(int sourceIndex, int targetIndex) {
+        if (sourceIndex >= 0 && sourceIndex < nodes.size() && targetIndex >= 0 && targetIndex < nodes.size()) {
+            Node sourceNode = nodes.get(sourceIndex);
+            Node targetNode = nodes.get(targetIndex);
+            sourceNode.setLinks(targetNode);
+            System.out.println("Reference added successfully.");
+        } else {
+            System.out.println("Invalid node index.");
         }
     }
 }
