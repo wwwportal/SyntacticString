@@ -6,14 +6,14 @@ import java.util.Scanner;
 import java.io.FileReader;
 
 public class Main {
-    private static TopicManager topics = new TopicManager();
-    private static final String FILEPATH = "src/files/topics.csv";
+    private static NodeManager nodes = new NodeManager();
+    private static final String FILEPATH = "src/files/nodes.csv";
     private static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
         boolean repeat = true;
         String option;
-        topics.loadTopics();
+        nodes.loadnodes();
         while (repeat) {
             clearConsole(); // Clear the console before displaying the menu
             displayMenu();
@@ -21,21 +21,21 @@ public class Main {
             option = input.nextLine().trim().toLowerCase();
 
             if (option.equals("display")) {
-                topics.displayTopics();
+                nodes.displayNodes();
             } else if (option.equals("unlearned")) {
-                topics.displayUnlearnedTopics();
+                nodes.displayUnlearnedNodes();
             } else if (option.equals("add")) {
-                addTopic();
+                addNode();
             } else if (option.equals("edit")) {
-                topics.editTopic();
+                nodes.editnode();
             } else if (option.equals("save")) {
-                saveTopics();
+                savenodes();
             } else if (option.equals("load")) {
-                loadTopics();
+                loadnodes();
             } else if (option.equals("clear")) {
-                topics.clearList();
+                nodes.clearList();
             } else if (option.equals("move")) {
-                topics.moveTopic();
+                nodes.moveNode();
             } else if (option.equals("help")) {
                 displayHelp(); // Call the help method
             } else if (option.equals("exit")) {
@@ -45,56 +45,56 @@ public class Main {
             }
         }
         input.close();
-        System.out.println("Exiting Topic Manager.");
+        System.out.println("Exiting node Manager.");
     }
 
-    public static void addTopic() {
-        System.out.print("Topic: ");
-        String topic = input.nextLine();
+    public static void addNode() {
+        System.out.print("node: ");
+        String node = input.nextLine();
         System.out.print("Description: ");
         String description = input.nextLine();
         System.out.print("Learned (true/false): ");
         boolean learned = input.nextBoolean();
         input.nextLine(); // Consume newline
-        TopicManager.addTopic(topic, description, learned);
-        System.out.println("Topic added successfully!");
+        NodeManager.addNode(node, description, learned);
+        System.out.println("node added successfully!");
     }
 
     public static void displayMenu() {
-        System.out.println("\n TOPIC MANAGER");
-        System.out.println("display - Display all topics");
-        System.out.println("unlearned - Display unlearned topics");
-        System.out.println("add - Add new topic");
-        System.out.println("edit - Edit topic");
-        System.out.println("save - Save topics to file");
-        System.out.println("load - Load topics from file");
+        System.out.println("\n node MANAGER");
+        System.out.println("display - Display all nodes");
+        System.out.println("unlearned - Display unlearned nodes");
+        System.out.println("add - Add new node");
+        System.out.println("edit - Edit node");
+        System.out.println("save - Save nodes to file");
+        System.out.println("load - Load nodes from file");
         System.out.println("clear - Clear list");
-        System.out.println("move - Move topic");
+        System.out.println("move - Move node");
         System.out.println("help - Display available commands"); // Added help to the menu
         System.out.println("exit - Exit the program");
     }
 
-    public static void saveTopics() {
-        System.out.println("Saving topics...");
+    public static void savenodes() {
+        System.out.println("Saving nodes...");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILEPATH))) {
-            System.out.println("Saving topics to " + FILEPATH);
-            for (Topic item : TopicManager.getTopics()) {
+            System.out.println("Saving nodes to " + FILEPATH);
+            for (Node item : NodeManager.getnodes()) {
                 writer.write(item.toString() + "\n");
             }
-            System.out.println("Topics saved successfully!");
+            System.out.println("nodes saved successfully!");
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
     }
 
-    public static void loadTopics() {
-        System.out.println("Loading topics...");
+    public static void loadnodes() {
+        System.out.println("Loading nodes...");
         try (BufferedReader br = new BufferedReader(new FileReader(FILEPATH))) {
             String line;
             while ((line = br.readLine()) != null) {
-                TopicManager.parseLine(line);
+                NodeManager.parseLine(line);
             }
-            System.out.println("Topics successfully loaded!");
+            System.out.println("nodes successfully loaded!");
         } catch (IOException e) {
             System.out.println("Error reading from file: " + e.getMessage());
         }
@@ -103,14 +103,14 @@ public class Main {
     // New method to display help information
     public static void displayHelp() {
         System.out.println("\nCOMMAND HELP");
-        System.out.println("display   - Displays all topics in the system.");
-        System.out.println("unlearned - Displays only the topics that are marked as 'unlearned'.");
-        System.out.println("add       - Adds a new topic to the system.");
-        System.out.println("edit      - Allows you to edit an existing topic.");
-        System.out.println("save      - Saves the current list of topics to the file.");
-        System.out.println("load      - Loads topics from the file.");
-        System.out.println("clear     - Clears the current list of topics (removes all topics).");
-        System.out.println("move      - Moves a topic to a different position in the list.");
+        System.out.println("display   - Displays all nodes in the system.");
+        System.out.println("unlearned - Displays only the nodes that are marked as 'unlearned'.");
+        System.out.println("add       - Adds a new node to the system.");
+        System.out.println("edit      - Allows you to edit an existing node.");
+        System.out.println("save      - Saves the current list of nodes to the file.");
+        System.out.println("load      - Loads nodes from the file.");
+        System.out.println("clear     - Clears the current list of nodes (removes all nodes).");
+        System.out.println("move      - Moves a node to a different position in the list.");
         System.out.println("help      - Displays this help message.");
         System.out.println("exit      - Exits the program.");
     }

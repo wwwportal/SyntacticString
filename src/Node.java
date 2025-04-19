@@ -1,18 +1,18 @@
 import java.util.ArrayList;
 
-public class Topic {
+public class Node {
 	private String name;
 	private String description;
 	private boolean learned;
-	private ArrayList<Topic> references = new ArrayList<>();
+	private ArrayList<Node> references = new ArrayList<>();
 
-	public Topic(String name, String description, boolean learned) {
+	public Node(String name, String description, boolean learned) {
 		this.name = name;
 		this.description = description;
 		this.learned = learned;
 	}
 
-	public String getTopic() {
+	public String getNode() {
 		return name;
 	}
 
@@ -25,8 +25,8 @@ public class Topic {
 
 	}
 
-	public void setTopic(String topic) {
-		this.name = topic;
+	public void setNode(String node) {
+		this.name = node;
 	}
 
 	public void setDescription(String description) {
@@ -37,9 +37,9 @@ public class Topic {
 		this.learned = learned;
 	}
 	
-	public void setReferences(Topic... topics) {
-		for (Topic topic : topics) {
-			references.add(topic);
+	public void setReferences(Node... nodes) {
+		for (Node node : nodes) {
+			references.add(node);
 		}
 	}
 
