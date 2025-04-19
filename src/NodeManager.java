@@ -6,23 +6,23 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class NodeManager {
-	private static final String filepath = "C:/CST8132/Studynodes/src/files/nodes.csv";
-	private static ArrayList<Node> nodes = new ArrayList<>();	
-	private static Scanner in = new Scanner(System.in);
-	public void loadnodes() {
-		System.out.println("Loading nodes...");
+    private static final String FILEPATH = "C:/CST8132/StudyTopics/src/files/nodes.csv";
+    private static ArrayList<Node> nodes = new ArrayList<>();	
+    private static Scanner in = new Scanner(System.in);
+    public void loadnodes() {
+        System.out.println("Loading nodes...");
 
-		String line;
-		try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
-			while ((line = br.readLine()) != null) {
-				parseLine(line);
-			}
-			System.out.println("nodes successfully loaded!");
-		}
-		catch (IOException e ) {
-			System.out.println("Error reading from file: " + e.getMessage());
-		}
-	}
+        String line;
+        try (BufferedReader br = new BufferedReader(new FileReader(FILEPATH))) {
+            while ((line = br.readLine()) != null) {
+                parseLine(line);
+            }
+            System.out.println("nodes successfully loaded!");
+        }
+        catch (IOException e ) {
+            System.out.println("Error reading from file: " + e.getMessage());
+        }
+    }
 	
 	public static void addNode(String name, String description, boolean learned) {
 		Node node = new Node(name, description, learned);
@@ -108,7 +108,6 @@ public class NodeManager {
 
 	public static void parseLine(String line) {
 		String[] fields = line.split(",");
-		System.out.println(fields[2]);
 		addNode(
 			fields[0], 
 			fields[1], 

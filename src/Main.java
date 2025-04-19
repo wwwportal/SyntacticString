@@ -7,7 +7,7 @@ import java.io.FileReader;
 
 public class Main {
     private static NodeManager nodes = new NodeManager();
-    private static final String FILEPATH = "src/files/nodes.csv";
+    private static final String FILEPATH = "C:/CST8132/StudyTopics/src/files/nodes.csv";
     private static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -15,8 +15,7 @@ public class Main {
         String option;
         nodes.loadnodes();
         while (repeat) {
-            clearConsole(); // Clear the console before displaying the menu
-            displayMenu();
+            System.out.println("[help]");
             System.out.print("> ");
             option = input.nextLine().trim().toLowerCase();
 
@@ -49,6 +48,7 @@ public class Main {
     }
 
     public static void addNode() {
+        clearConsole();
         System.out.print("node: ");
         String node = input.nextLine();
         System.out.print("Description: ");
@@ -58,23 +58,11 @@ public class Main {
         input.nextLine(); // Consume newline
         NodeManager.addNode(node, description, learned);
         System.out.println("node added successfully!");
-    }
-
-    public static void displayMenu() {
-        System.out.println("\n node MANAGER");
-        System.out.println("display - Display all nodes");
-        System.out.println("unlearned - Display unlearned nodes");
-        System.out.println("add - Add new node");
-        System.out.println("edit - Edit node");
-        System.out.println("save - Save nodes to file");
-        System.out.println("load - Load nodes from file");
-        System.out.println("clear - Clear list");
-        System.out.println("move - Move node");
-        System.out.println("help - Display available commands"); // Added help to the menu
-        System.out.println("exit - Exit the program");
+        clearConsole();
     }
 
     public static void savenodes() {
+        clearConsole();
         System.out.println("Saving nodes...");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILEPATH))) {
             System.out.println("Saving nodes to " + FILEPATH);
@@ -85,9 +73,13 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
+        finally {
+            exitSection();
+        }
     }
 
     public static void loadnodes() {
+        clearConsole();
         System.out.println("Loading nodes...");
         try (BufferedReader br = new BufferedReader(new FileReader(FILEPATH))) {
             String line;
@@ -98,10 +90,14 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Error reading from file: " + e.getMessage());
         }
+        finally {
+            exitSection();
+        }
     }
 
     // New method to display help information
     public static void displayHelp() {
+        clearConsole();
         System.out.println("\nCOMMAND HELP");
         System.out.println("display   - Displays all nodes in the system.");
         System.out.println("unlearned - Displays only the nodes that are marked as 'unlearned'.");
@@ -113,6 +109,7 @@ public class Main {
         System.out.println("move      - Moves a node to a different position in the list.");
         System.out.println("help      - Displays this help message.");
         System.out.println("exit      - Exits the program.");
+        exitSection();
     }
 
     // Method to clear the console screen
@@ -127,6 +124,19 @@ public class Main {
         } catch (IOException | InterruptedException ex) {
             // Handle any exceptions, for example
             System.out.println("Error clearing console: " + ex.getMessage());
+        }
+    }
+    
+    public static void exitSection() {
+        System.out.println("[exit]");
+        System.out.print("> ");
+        String help = input.nextLine();       
+        if (help.equals("exit")) {
+            clearConsole();// Call the help method
+        }
+        else {
+            clearConsole();
+            main(null);
         }
     }
 }
