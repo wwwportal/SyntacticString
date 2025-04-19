@@ -1,40 +1,31 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Node {
-	private String name;
-	private String description;
-	private boolean learned;
+public class Node implements Serializable {
+	private String line;
+	private boolean status;
 	private ArrayList<Node> references = new ArrayList<>();
 
-	public Node(String name, String description, boolean learned) {
-		this.name = name;
-		this.description = description;
-		this.learned = learned;
+	public Node(String line, boolean status) {
+		this.line = line;
+		this.status = status;
 	}
 
 	public String getNode() {
-		return name;
+		return line;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public boolean getLearned() {
-		return learned;
+	public boolean getStatus() {
+		return status;
 
 	}
 
-	public void setNode(String node) {
-		this.name = node;
+	public void setNode(String line) {
+		this.line = line;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public void setLearned(boolean learned) {
-		this.learned = learned;
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 	
 	public void setReferences(Node... nodes) {
@@ -45,6 +36,6 @@ public class Node {
 
 	@Override
 	public String toString() {
-		return String.format(name + ", " + description + ", " + learned);
+		return String.format(line + ", " + status);
 	}
 }
