@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class NodeManager implements Serializable {
+    private static final long serialVersionUID = 9067008293711085447L;
     private ArrayList<Node> nodes = new ArrayList<>();
     private static Scanner in = new Scanner(System.in);
 
@@ -31,7 +32,7 @@ public class NodeManager implements Serializable {
             System.err.println("Try adding a new node!");
         } else {
             for (Node node : nodes) {
-                if (!node.getStatus() == false) {
+                if (!node.getStatus()) {
                     System.out.println(node.getLine() + ", " + node.getStatus());
                 }
             }
@@ -119,14 +120,33 @@ public class NodeManager implements Serializable {
         }
     }
 
-    public void addReference(int sourceIndex, int targetIndex) {
-        if (sourceIndex >= 0 && sourceIndex < nodes.size() && targetIndex >= 0 && targetIndex < nodes.size()) {
+    public void link() {
+        System.out.print("source index > ");
+        int sourceIndex = in.nextInt();
+
+        if (sourceIndex >= 0 && sourceIndex < nodes.size()) {
             Node sourceNode = nodes.get(sourceIndex);
-            Node targetNode = nodes.get(targetIndex);
-            sourceNode.setLinks(targetNode);
-            System.out.println("Reference added successfully.");
+            String input;
+            do {
+                System.out.print("target index (or 'end' to finish) > ");
+                input = in.next();
+                if (!input.equals("end")) {
+                    try {
+                        int targetIndex = Integer.parseInt(input);
+                        if (targetIndex >= 0 && targetIndex < nodes.size()) {
+                            Node targetNode = nodes.get(targetIndex);
+                            sourceNode.addLink(targetNode);
+                            System.out.println("Link added successfully.");
+                        } else {
+                            System.out.println("Invalid target node index.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input. Please enter a valid integer or 'end'.");
+                    }
+                }
+            } while (!input.equals("end"));
         } else {
-            System.out.println("Invalid node index.");
+            System.out.println("Invalid source node index.");
         }
     }
 }

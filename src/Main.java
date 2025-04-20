@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main {
     private static NodeManager nodes = new NodeManager();
-    private static final String FILEPATH = "src/files/nodes.dat";
+    private static final String FILEPATH = "C:\\CST8132\\StudyTopics\\src\\files\\nodes.dat";
     private static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -80,7 +80,7 @@ public class Main {
                     } else if (parts[2].equals("link")) {
                         try {
                             int target = Integer.parseInt(parts[3]);
-                            nodes.addReference(index, target);
+                            nodes.link();
                         } catch (NumberFormatException e) {
                             System.out.println("Invalid target index.");
                         }
@@ -133,7 +133,7 @@ public class Main {
         try (FileInputStream fis = new FileInputStream(FILEPATH)) {
             try (ObjectInputStream in = new ObjectInputStream(fis)) {
                 NodeManager loadedNodes = (NodeManager) in.readObject();
-                Main.nodes = loadedNodes;
+                Main.nodes = loadedNodes; // Assuming 'nodes' is a static field in Main
                 System.out.println("Nodes loaded successfully from " + FILEPATH);
             } catch (ClassNotFoundException e) {
                 System.err.println("ClassNotFoundException: " + e.getMessage());
