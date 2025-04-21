@@ -6,8 +6,13 @@
 2. I may need some kind of view mode and edit mode in the program to separate the different set of commands users can issue.
 
 Users should be able to use commands like:
-node all
-node [index] // views node and links
-node [index] move [target]
-node [index] remove
-node [index] link [index]
+node [target] // views node and links
+node move [source] [target]
+node remove [source]
+node link [source] [target]
+
+nodes
+nodes load
+nodes save
+nodes clear
+nodes 

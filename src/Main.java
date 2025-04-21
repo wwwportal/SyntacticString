@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Main {
-    private static NodeManager nodes = new NodeManager();
+    private static Nodes nodes = new Nodes();
     private static final String FILEPATH = "C:\\CST8132\\StudyTopics\\src\\files\\nodes.dat";
     private static Scanner input = new Scanner(System.in);
 
@@ -15,29 +15,13 @@ public class Main {
             System.out.println("[help]");
             System.out.print("> ");
             option = input.nextLine().trim().toLowerCase();
-
             String[] parts = option.split(" ");
 
             if (parts[0].equals("node")) {
-                handleNodeCommand(parts);
+                nodeMode(parts);
                 exitSection();
-            } else if (option.equals("unlearned")) {
-                nodes.displayFalseNodes();
-                exitSection();
-            } else if (option.equals("add")) {
-                addNode();
-                exitSection();
-            } else if (option.equals("edit")) {
-                nodes.editNode();
-                exitSection();
-            } else if (option.equals("save")) {
-                save();
-                exitSection();
-            } else if (option.equals("load")) {
-                load();
-                exitSection();
-            } else if (option.equals("clear")) {
-                nodes.clearList();
+            } else if (parts[0].equals("nodes")) {
+                nodesMode(parts);
                 exitSection();
             } else if (option.equals("help")) {
                 displayHelp();
@@ -53,46 +37,49 @@ public class Main {
         System.out.println("Exiting Node Manager.");
     }
 
-    private static void handleNodeCommand(String[] parts) {
+    private static void nodeMode(String[] parts) {
         if (parts.length == 1) {
             System.out.println("Invalid node command.  Try 'node all', 'node [index]', etc.");
             return;
         }
-
-        if (parts[1].equals("all")) {
-            nodes.displayNodes();
-        } else {
-            try {
-                int index = Integer.parseInt(parts[1]);
-                if (index >= 0 && index < nodes.getNodes().size()) {
-                    Node selectedNode = nodes.getNodes().get(index);
-                    if (parts.length == 2) {
-                        displayNodeDetails(selectedNode, index);
-                    } else if (parts[2].equals("move")) {
-                        try {
-                            int target = Integer.parseInt(parts[3]);
-                            nodes.moveNode(index, target);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Invalid target index.");
-                        }
-                    } else if (parts[2].equals("remove")) {
-                        nodes.removeNode(index);
-                    } else if (parts[2].equals("link")) {
-                        try {
-                            int target = Integer.parseInt(parts[3]);
-                            nodes.link();
-                        } catch (NumberFormatException e) {
-                            System.out.println("Invalid target index.");
-                        }
-                    } else {
-                        System.out.println("Invalid node subcommand.");
-                    }
-                } else {
-                    System.out.println("Invalid node index.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid node index.");
+        try {
+            if (parts.length == 2) {
+                int index = Integer.valueOf(parts[1]);
+                Node selectedNode = nodes.getNodes().get(index);
+                displayNodeDetails(selectedNode, index);
+            } else if (parts[1].equals("move")) {
+                int source = Integer.parseInt(parts[2]);
+                int target = Integer.parseInt(parts[3]);
+                nodes.moveNode(source, target);
+            } else if (parts[1].equals("remove")) {
+                int target = Integer.parseInt(parts[2]);
+                nodes.removeNode(target);
+            } else if (parts[1].equals("link")) {
+                nodes.link(parts);
+            } else if (parts[1].equals("add")) {
+                nodes.addNode();
+            } else if (parts[1].equals("edit")) {
+                nodes.editNode(parts);
+            } else {
+                System.out.println("Invalid node subcommand.");
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid node index.");
+        }
+    }
+
+    private static void nodesMode(String[] parts) {
+        if (parts.length == 1) {
+            nodes.displayNodes();
+            exitSection();
+        } else if (parts[1].equals("false")) {
+            nodes.displayFalseNodes();
+        } else if (parts[1].equals("load")) {
+            load();
+        } else if (parts[1].equals("save")) {
+            save();
+        } else if (parts[1].equals("clear")) {
+            nodes.clearList();
         }
     }
 
@@ -102,18 +89,6 @@ public class Main {
         for (Node linkedNode : node.getLinks()) {
             System.out.println("- " + linkedNode.getLine());
         }
-    }
-
-    public static void addNode() {
-        clearConsole();
-        System.out.println("NEW NODE");
-        System.out.print("Node Name: ");
-        String nodeName = input.nextLine();
-        System.out.print("Learned (true/false): ");
-        boolean learned = input.nextBoolean();
-        input.nextLine(); // Consume newline
-        nodes.addNode(nodeName, learned);
-        System.out.println("Node added successfully!");
     }
 
     public static void save() {
@@ -132,7 +107,7 @@ public class Main {
     public static void load() {
         try (FileInputStream fis = new FileInputStream(FILEPATH)) {
             try (ObjectInputStream in = new ObjectInputStream(fis)) {
-                NodeManager loadedNodes = (NodeManager) in.readObject();
+                Nodes loadedNodes = (Nodes) in.readObject();
                 Main.nodes = loadedNodes; // Assuming 'nodes' is a static field in Main
                 System.out.println("Nodes loaded successfully from " + FILEPATH);
             } catch (ClassNotFoundException e) {
