@@ -1,4 +1,7 @@
 import java.io.*;
+import java.io.File;
+import java.io.InvalidClassException;
+import java.io.StreamCorruptedException;
 import java.util.Scanner;
 
 public class Main {
@@ -13,7 +16,6 @@ public class Main {
             System.out.print("> ");
             option = input.nextLine().trim().toLowerCase();
             String[] parts = option.split(" ");
-
             if (parts[0].equals("node")) {
                 nodeMode(parts);
             } else if (parts[0].equals("nodes")) {
@@ -51,8 +53,6 @@ public class Main {
                 nodes.link(parts);
             } else if (parts[1].equals("add")) {
                 nodes.addNode();
-            } else if (parts[1].equals("edit")) {
-                nodes.editNode(parts);
             } else {
                 System.out.println("Invalid node subcommand.");
             }
@@ -64,8 +64,6 @@ public class Main {
     private static void nodesMode(String[] parts) {
         if (parts.length == 1) {
             nodes.displayNodes();
-        } else if (parts[1].equals("false")) {
-            nodes.displayFalseNodes();
         } else if (parts[1].equals("load")) {
             load();
         } else if (parts[1].equals("save")) {
@@ -93,18 +91,32 @@ public class Main {
     }
 
     public static void load() {
-        try (FileInputStream fis = new FileInputStream(FILEPATH)) {
-            try (ObjectInputStream in = new ObjectInputStream(fis)) {
-                Nodes loadedNodes = (Nodes) in.readObject();
-                Main.nodes = loadedNodes; // Assuming 'nodes' is a static field in Main
+        if (!new File(FILEPATH).exists()) {
+            System.out.println("Starting with empty nodes list - no saved data found.");
+            return;
+        }
+
+        try (FileInputStream fis = new FileInputStream(FILEPATH);
+             ObjectInputStream in = new ObjectInputStream(fis)) {
+            
+            Object obj = in.readObject();
+            if (obj instanceof Nodes) {
+                Main.nodes = (Nodes) obj;
                 System.out.println("Nodes loaded successfully from " + FILEPATH);
-            } catch (ClassNotFoundException e) {
-                System.err.println("ClassNotFoundException: " + e.getMessage());
-            } catch (IOException e) {
-                System.err.println("Error loading nodes: " + e.getMessage());
+            } else {
+                System.err.println("Error: File contains invalid data type");
+                Main.nodes = new Nodes(); // Create fresh nodes object
             }
+            
+        } catch (ClassNotFoundException | InvalidClassException e) {
+            System.err.println("Error loading nodes: Class definition mismatch - creating new nodes list");
+            Main.nodes = new Nodes(); // Create fresh nodes object
+        } catch (StreamCorruptedException e) {
+            System.err.println("Error loading nodes: File is corrupted - creating new nodes list");
+            Main.nodes = new Nodes(); // Create fresh nodes object 
         } catch (IOException e) {
-            System.err.println("Error opening file for loading: " + e.getMessage());
+            System.err.println("Error loading nodes: " + e.getMessage());
+            Main.nodes = new Nodes(); // Create fresh nodes object
         }
     }
 

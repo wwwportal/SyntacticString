@@ -6,18 +6,15 @@ public class Node implements Serializable {
     private static final long serialVersionUID = 1L;
 	private int id;
     private String line;
-    private boolean status;
     private ArrayList<Node> links = new ArrayList<>();
 
-	public Node(String line, boolean status) {
+	public Node(String line) {
         this.line = line;
-        this.status = status;
     }
 
-    public Node( int id, String line, boolean status) {
+    public Node( int id, String line) {
 		this.id = id;
         this.line = line;
-        this.status = status;
     }
 
     public String getLine() {
@@ -26,14 +23,6 @@ public class Node implements Serializable {
 
 	public void setLine(String line) {
         this.line = line;
-    }
-
-    public boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public void setLinks(List<Node> links) {
@@ -61,7 +50,7 @@ public class Node implements Serializable {
 
     @Override
     public String toString() {
-		String info = id + ".  " + line + ". STATUS: " + status + ". /n LINKS: " + displayLinks();
+		String info = id + ".  " + line + ". /n LINKS: " + displayLinks();
         return info;
     }
 }

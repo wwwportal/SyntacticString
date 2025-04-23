@@ -10,12 +10,13 @@ public class Nodes implements Serializable {
 
     public void addNode() {
         System.out.println("NEW NODE");
-        System.out.print("> ");
-        String name = in.nextLine();
-        System.out.print("Status: ");
-        boolean status = in.nextBoolean();
-        Node node = new Node(name, status);
-        nodes.add(node);
+        String name;
+        do {
+            System.out.print("> ");
+            name = in.nextLine();
+            Node node = new Node(name);
+            nodes.add(node);
+        } while (!name.equals(":q"));
         System.out.println("Node added successfully!");
     }
 
@@ -32,34 +33,8 @@ public class Nodes implements Serializable {
         }
     }
 
-    public void displayFalseNodes() {
-        if (nodes.isEmpty()) {
-            System.err.println("There are currently no nodes in the system");
-            System.err.println("Try adding a new node!");
-        } else {
-            for (Node node : nodes) {
-                if (!node.getStatus()) {
-                    System.out.println(node.getLine() + ", " + node.getStatus());
-                }
-            }
-        }
-    }
-
     public ArrayList<Node> getNodes() {
         return nodes;
-    }
-
-    public void editNode(String[] parts) {
-        System.out.println("EDIT NODE");
-		Node node = nodes.get(Integer.parseInt(parts[2]));
-		if (parts[3].contains("status")) {
-			if (parts[4].equals("false")) {
-				node.setStatus(false);
-			}
-			else if (parts[4].equals("true")) {
-				node.setStatus(true);
-			}
-		}
     }
 
     public void clearList() {
@@ -96,7 +71,7 @@ public class Nodes implements Serializable {
 
 
     public void nodeDetails(Node node, int index) {
-        System.out.println("Node " + index + ": " + node.getLine() + " (Learned: " + node.getStatus() + ")");
+        System.out.println("Node " + index + ": " + node.getLine());
         System.out.println("Links to:");
         for (Node linkedNode : node.getLinks()) {
             System.out.println("- " + linkedNode.getLine());
