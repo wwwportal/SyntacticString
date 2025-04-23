@@ -93,6 +93,16 @@ public class Nodes implements Serializable {
         }
     }
 
+
+
+    public void nodeDetails(Node node, int index) {
+        System.out.println("Node " + index + ": " + node.getLine() + " (Learned: " + node.getStatus() + ")");
+        System.out.println("Links to:");
+        for (Node linkedNode : node.getLinks()) {
+            System.out.println("- " + linkedNode.getLine());
+        }
+    }
+
     public void link(String[] parts) {
 		Node sourceNode = nodes.get(Integer.parseInt(parts[2]));
 		for (int i = 3; i<(parts.length-1); i++) {
