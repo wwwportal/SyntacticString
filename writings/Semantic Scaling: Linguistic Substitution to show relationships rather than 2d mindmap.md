@@ -10,6 +10,7 @@
 Related:
 
 [1] StretchText by Ted Nelson
+
 [2] https://andrewcantino.com/
 - https://billwadge.com/2022/02/24/stretchtext-or-bust-ted-nelsons-unrealized-vision/
 
