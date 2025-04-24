@@ -5,9 +5,7 @@
 4. **Modularity:** In the original StretchText, a word can be substituted by another pre-written text that adds more detail to the passage. However, this approach seems barely modular. Our solution breaks down each concept to the point where expansion and contraction can be done at any point of any text without creating logical contradictions.
 5. **Maximum Size:** There should be a maximum size for a section. Otherwise, you could theoretically expand a single paragraph to display all the information contained on the internet. Therefore, once a block reaches its maximum size, a new block should be created, somehow related to the text around its pointer in the previous block. Ideally, the program creates a new block before the previous one reached its maximum size.
 
-
-
-******Related**
+**Related**
 1. StretchText by Ted Nelson
 2. https://andrewcantino.com/
 3. https://billwadge.com/2022/02/24/stretchtext-or-bust-ted-nelsons-unrealized-vision/
