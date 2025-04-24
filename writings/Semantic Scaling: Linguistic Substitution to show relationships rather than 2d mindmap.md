@@ -3,3 +3,4 @@ The idea is that mindmaps can show more information at once than can be represen
 
 Similar:
 - StretchText by Ted Nelson
+- https://andrewcantino.com/
