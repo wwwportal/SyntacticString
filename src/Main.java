@@ -5,7 +5,7 @@ import java.io.StreamCorruptedException;
 import java.util.Scanner;
 
 public class Main {
-    private static final String FILEPATH = "C:\\CST8132\\StudyTopics\\src\\files\\nodes.dat";
+    private static final String FILEPATH = "C:\\SyntacticString\\src\\files\\nodes.dat";
     private static Nodes nodes = new Nodes();
     private static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
@@ -17,9 +17,9 @@ public class Main {
             option = input.nextLine().trim().toLowerCase();
             String[] parts = option.split(" ");
             if (parts[0].equals("node")) {
-                nodeMode(parts);
+                Nodes.nodeMode(parts);
             } else if (parts[0].equals("nodes")) {
-                nodesMode(parts);
+                Nodes.nodesMode(parts);
             } else if (option.equals("help")) {
                 displayHelp();
             } else if (option.equals("exit")) {
@@ -30,47 +30,6 @@ public class Main {
         }
         input.close();
         System.out.println("Exiting Node Manager.");
-    }
-
-    private static void nodeMode(String[] parts) {
-        if (parts.length == 1) {
-            System.out.println("Invalid node command.");
-            return;
-        }
-        try {
-            if (parts.length == 2) {
-                int index = Integer.valueOf(parts[1]);
-                Node selectedNode = nodes.getNodes().get(index);
-                nodes.nodeDetails(selectedNode, index);
-            } else if (parts[1].equals("move")) {
-                int source = Integer.parseInt(parts[2]);
-                int target = Integer.parseInt(parts[3]);
-                nodes.moveNode(source, target);
-            } else if (parts[1].equals("remove")) {
-                int target = Integer.parseInt(parts[2]);
-                nodes.removeNode(target);
-            } else if (parts[1].equals("link")) {
-                nodes.link(parts);
-            } else if (parts[1].equals("add")) {
-                nodes.addNode();
-            } else {
-                System.out.println("Invalid node subcommand.");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid node index.");
-        }
-    }
-
-    private static void nodesMode(String[] parts) {
-        if (parts.length == 1) {
-            nodes.displayNodes();
-        } else if (parts[1].equals("load")) {
-            load();
-        } else if (parts[1].equals("save")) {
-            save();
-        } else if (parts[1].equals("clear")) {
-            nodes.clearList();
-        }
     }
 
     public static void displayHelp() {

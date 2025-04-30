@@ -5,39 +5,40 @@ import java.util.List;
 public class Node implements Serializable {
     private static final long serialVersionUID = 1L;
 	private int id;
-    private String line;
-    private ArrayList<Node> links = new ArrayList<>();
+    private String content;
+    private List<Node> linksTo = new ArrayList<>();
+   // private List<Node> linkedFrom = new ArrayList<>();
 
-	public Node(String line) {
-        this.line = line;
+	public Node(String content) {
+        this.content = content;
     }
 
-    public Node( int id, String line) {
+    public Node( int id, String content) {
 		this.id = id;
-        this.line = line;
+        this.content = content;
     }
 
-    public String getLine() {
-        return line;
+    public String getContent() {
+        return content;
     }
 
-	public void setLine(String line) {
-        this.line = line;
+	public void setContent(String content) {
+        this.content = content;
     }
 
-    public void setLinks(List<Node> links) {
-		for (Node node : links) {
-			this.links.add(node);
+    public void setLinks(List<Node> linksTo) {
+		for (Node node : linksTo) {
+			this.linksTo.add(node);
 		}
     }
 
     public List<Node> getLinks() {
-        return links;
+        return linksTo;
     }
 
 	public List<String> displayLinks() {
 		List<String> whole = new ArrayList<>();
-		for (Node link : links) {
+		for (Node link : linksTo) {
 			String part =" [" + link.id + "] ";
 			whole.add(part);
 		}
@@ -45,12 +46,12 @@ public class Node implements Serializable {
  	}
 
 	public void setLink(Node link) {
-		this.links.add(link);
+		this.linksTo.add(link);
     }
 
     @Override
     public String toString() {
-		String info = id + ".  " + line + ". /n LINKS: " + displayLinks();
+		String info = id + ".  " + content + ". /n LINKS: " + displayLinks();
         return info;
     }
 }
