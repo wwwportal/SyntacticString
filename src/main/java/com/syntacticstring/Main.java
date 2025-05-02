@@ -1,3 +1,4 @@
+package main.java.com.syntacticstring;
 import java.io.*;
 import java.io.File;
 import java.io.InvalidClassException;

@@ -1,3 +1,4 @@
+package main.java.com.syntacticstring;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -14,11 +15,7 @@ public class Nodes implements Serializable {
             return;
         }
         try {
-            if (parts.length == 2) {
-                int index = Integer.valueOf(parts[1]);
-                Node selectedNode = getNodes().get(index);
-                nodeDetails(selectedNode, index);
-            } else if (parts[1].equals("move")) {
+            if (parts[1].equals("move")) {
                 int source = Integer.parseInt(parts[2]);
                 int target = Integer.parseInt(parts[3]);
                 moveNode(source, target);
@@ -51,13 +48,11 @@ public class Nodes implements Serializable {
         if (nodes.isEmpty()) {
             System.err.println("There are currently no nodes in the system");
             System.err.println("Try adding a new node!");
-        } else {
-            System.out.println("ALL NODES");
-            for (int i = 0; i < nodes.size(); i++) {
-                String name = nodes.get(i).getContent();
-                System.out.println(i + ". " + name);
-            }
+            return;
         }
+        
+        NodeNavigator navigator = new NodeNavigator(nodes);
+        navigator.navigate();
     }
 
     public static ArrayList<Node> getNodes() {

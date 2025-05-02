@@ -1,3 +1,4 @@
+package main.java.com.syntacticstring;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
