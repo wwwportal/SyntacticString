@@ -5,24 +5,26 @@ import java.io.StreamCorruptedException;
 import java.util.Scanner;
 
 public class Main {
-    private static final String FILEPATH = "C:\\SyntacticString\\src\\files\\nodes.dat";
+    private static final String FILEPATH = "C:\\SyntacticString\\src\\nodes.dat";
     private static Nodes nodes = new Nodes();
     private static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
         boolean repeat = true;
-        String option;
+        String command;
         load();
         while (repeat) {
             System.out.print("> ");
-            option = input.nextLine().trim().toLowerCase();
-            String[] parts = option.split(" ");
+            // parse the input before using it
+            command = input.nextLine().trim().toLowerCase();
+            Nodes.parseCommand(command);
+            String[] parts = command.split(" ");
             if (parts[0].equals("node")) {
                 Nodes.nodeMode(parts);
             } else if (parts[0].equals("nodes")) {
                 Nodes.nodesMode(parts);
-            } else if (option.equals("help")) {
+            } else if (command.equals("help")) {
                 displayHelp();
-            } else if (option.equals("exit")) {
+            } else if (command.equals("exit")) {
                 repeat = false;
             } else {
                 System.out.println("Invalid command. Please try again.");
@@ -34,19 +36,6 @@ public class Main {
 
     public static void displayHelp() {
         System.out.println("\nCOMMAND HELP");
-        System.out.println("node all - Displays all nodes in the system.");
-        System.out.println("node [index] - Views node and links.");
-        System.out.println("node [index] move [target] - Moves node to target index.");
-        System.out.println("node [index] remove - Removes node.");
-        System.out.println("node [index] link [index] - Links node to another node.");
-        System.out.println("unlearned - Displays only the nodes that are marked as 'unlearned'.");
-        System.out.println("add - Adds a new node to the system.");
-        System.out.println("edit - Allows you to edit an existing node.");
-        System.out.println("save - Saves the current list of nodes to the file.");
-        System.out.println("load - Loads nodes from the file.");
-        System.out.println("clear - Clears the current list of nodes (removes all nodes).");
-        System.out.println("help - Displays this help message.");
-        System.out.println("exit - Exits the program.");
     }
 
     public static void load() {

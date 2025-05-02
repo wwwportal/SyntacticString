@@ -8,15 +8,42 @@ public class Nodes implements Serializable {
     private static ArrayList<Node> nodes = new ArrayList<>();
     private static Scanner in = new Scanner(System.in);
 
-    public static void addNode() {
-        System.out.println("NEW NODE");
-        String name;
-        do {
-            System.out.print("> ");
-            name = in.nextLine();
-            Node node = new Node(name);
-            nodes.add(node);
-        } while (!name.equals(":q"));
+    public static void nodeMode(String[] parts) {
+        if (parts.length == 1) {
+            System.out.println("Invalid node command.");
+            return;
+        }
+        try {
+            if (parts.length == 2) {
+                int index = Integer.valueOf(parts[1]);
+                Node selectedNode = getNodes().get(index);
+                nodeDetails(selectedNode, index);
+            } else if (parts[1].equals("move")) {
+                int source = Integer.parseInt(parts[2]);
+                int target = Integer.parseInt(parts[3]);
+                moveNode(source, target);
+            } else if (parts[1].equals("remove")) {
+                int target = Integer.parseInt(parts[2]);
+                removeNode(target);
+            } else if (parts[1].equals("link")) {
+                link(parts);
+            } else if (parts[1].equals("add")) {
+                addNode(parts);
+            } else {
+                System.out.println("Invalid node subcommand.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid node input.");
+        }
+    }
+
+    public static void addNode(String[] parts) {
+        String name = parts[2];
+        for (int i = 3; i < parts.length; i++) {
+            name += " " + parts[i];
+        }
+        Node node = new Node(name);
+        nodes.add(node);
         System.out.println("Node added successfully!");
     }
 
@@ -99,35 +126,6 @@ public class Nodes implements Serializable {
 
 		}
 	}
-
-    public static void nodeMode(String[] parts) {
-        if (parts.length == 1) {
-            System.out.println("Invalid node command.");
-            return;
-        }
-        try {
-            if (parts.length == 2) {
-                int index = Integer.valueOf(parts[1]);
-                Node selectedNode = getNodes().get(index);
-                nodeDetails(selectedNode, index);
-            } else if (parts[1].equals("move")) {
-                int source = Integer.parseInt(parts[2]);
-                int target = Integer.parseInt(parts[3]);
-                moveNode(source, target);
-            } else if (parts[1].equals("remove")) {
-                int target = Integer.parseInt(parts[2]);
-                removeNode(target);
-            } else if (parts[1].equals("link")) {
-                link(parts);
-            } else if (parts[1].equals("add")) {
-                addNode();
-            } else {
-                System.out.println("Invalid node subcommand.");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid node index.");
-        }
-    }
     
     public static void nodesMode(String[] parts) {
         if (parts.length == 1) {
@@ -139,5 +137,28 @@ public class Nodes implements Serializable {
         } else if (parts[1].equals("clear")) {
             clearList();
         }
+    }
+
+    public static ArrayList<String> parseCommand(String command) {
+        boolean inQuotes = false;
+        char character;
+        String word = null;
+        ArrayList<String> fields = new ArrayList<>();
+        for (int i = 0; i < command.length(); i++) {
+            character = command.charAt(i);
+            if (character == '"' && inQuotes == false) {
+                fields.add(word);
+                inQuotes = true;
+                word = null;
+            }
+            else if (character == '"' && inQuotes == true) {
+                inQuotes = false;
+                fields.add(word);
+            }
+            else {
+                word += character;
+            }
+        }
+        return fields;
     }
 }
